@@ -26,7 +26,8 @@ class StoreListScreen extends ConsumerWidget {
             const SizedBox(height: 12),
             Text('Failed to load stores\n$e', textAlign: TextAlign.center),
             const SizedBox(height: 12),
-            TextButton(onPressed: () => ref.invalidate(storesProvider),
+            TextButton(
+                onPressed: () => ref.invalidate(storesProvider),
                 child: const Text('Retry')),
           ],
         ),
@@ -38,11 +39,14 @@ class StoreListScreen extends ConsumerWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Icon(Icons.storefront_outlined,
-                    size: 64, color: AppColors.textSecondaryLight.withOpacity(0.5)),
+                    size: 64,
+                    color: AppColors.textSecondaryLight.withOpacity(0.5)),
                 const SizedBox(height: 16),
                 const Text('No stores available yet',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
-                const Text('Stores from the Kursi Road corridor\nwill appear here',
+                    style:
+                        TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+                const Text(
+                    'Stores from the Kursi Road corridor\nwill appear here',
                     textAlign: TextAlign.center,
                     style: TextStyle(color: AppColors.textSecondaryLight)),
               ],
@@ -87,7 +91,8 @@ class StoreListScreen extends ConsumerWidget {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 8, vertical: 2),
                         decoration: BoxDecoration(
-                          color: _categoryColor(store.category).withOpacity(0.1),
+                          color:
+                              _categoryColor(store.category).withOpacity(0.1),
                           borderRadius: BorderRadius.circular(6),
                         ),
                         child: Text(
@@ -103,8 +108,7 @@ class StoreListScreen extends ConsumerWidget {
                   ),
                 ),
                 trailing: const Icon(Icons.chevron_right_rounded),
-                onTap: () =>
-                    context.pushNamed('createOrder', pathParameters: {
+                onTap: () => context.pushNamed('createOrder', pathParameters: {
                   'storeId': store.id.toString(),
                 }),
               ),

@@ -21,8 +21,7 @@ class OrderEvent {
         orderId: json['order_id'] as int,
         actorId: json['actor_id'] as String,
         eventType: json['event_type'] as String,
-        metadata:
-            (json['metadata'] as Map<String, dynamic>?) ?? const {},
+        metadata: (json['metadata'] as Map<String, dynamic>?) ?? const {},
         createdAt: DateTime.parse(json['created_at'] as String),
       );
 

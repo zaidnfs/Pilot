@@ -6,29 +6,25 @@ import '../services/supabase_service.dart';
 import '../core/dummy_data.dart';
 
 /// Provides a stream of the current user's active orders (as requester).
-final requesterOrdersProvider =
-    StreamProvider<List<Order>>((ref) {
+final requesterOrdersProvider = StreamProvider<List<Order>>((ref) {
   // TEMP: Return dummy data
   return Stream.value([DummyData.trackingOrder]);
 });
 
 /// Provides a stream of available orders for travelers (status: requested).
-final availableOrdersProvider =
-    StreamProvider<List<Order>>((ref) {
+final availableOrdersProvider = StreamProvider<List<Order>>((ref) {
   // TEMP: Return dummy data
   return Stream.value(DummyData.availableOrders);
 });
 
 /// Provides a stream of the current traveler's active delivery.
-final travelerActiveOrderProvider =
-    StreamProvider<Order?>((ref) {
+final travelerActiveOrderProvider = StreamProvider<Order?>((ref) {
   // TEMP: Return dummy data
   return Stream.value(DummyData.activeDelivery);
 });
 
 /// Provides a single order by ID (for tracking screen).
-final orderByIdProvider =
-    StreamProvider.family<Order?, int>((ref, orderId) {
+final orderByIdProvider = StreamProvider.family<Order?, int>((ref, orderId) {
   // TEMP: Return dummy data
   return Stream.value(DummyData.trackingOrder);
 });

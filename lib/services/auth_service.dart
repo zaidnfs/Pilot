@@ -47,6 +47,5 @@ class AuthService {
   static Session? get currentSession => _auth.currentSession;
 
   /// Stream of auth state changes for reactive UI.
-  static Stream<AuthState> get onAuthStateChange =>
-      _auth.onAuthStateChange;
+  static Stream<AuthState> get onAuthStateChange => _auth.onAuthStateChange;
 }

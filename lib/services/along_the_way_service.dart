@@ -42,8 +42,7 @@ class AlongTheWayService {
 
     final data = response as List<dynamic>;
     return data
-        .map((json) =>
-            TravelerMatch.fromJson(json as Map<String, dynamic>))
+        .map((json) => TravelerMatch.fromJson(json as Map<String, dynamic>))
         .toList();
   }
 
@@ -173,8 +172,7 @@ class AlongTheWayService {
 
   static double _toRad(double deg) => deg * pi / 180;
 
-  static double _haversine(
-      double lat1, double lng1, double lat2, double lng2) {
+  static double _haversine(double lat1, double lng1, double lat2, double lng2) {
     final dLat = lat2 - lat1;
     final dLng = lng2 - lng1;
     final a = sin(dLat / 2) * sin(dLat / 2) +
@@ -208,8 +206,7 @@ class TravelerMatch {
     required this.distanceMeters,
   });
 
-  factory TravelerMatch.fromJson(Map<String, dynamic> json) =>
-      TravelerMatch(
+  factory TravelerMatch.fromJson(Map<String, dynamic> json) => TravelerMatch(
         id: json['id'] as String,
         fullName: json['full_name'] as String,
         phone: json['phone'] as String,

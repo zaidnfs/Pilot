@@ -1,7 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../models/store.dart';
-import '../services/supabase_service.dart';
 
 import '../core/dummy_data.dart';
 
@@ -32,7 +31,8 @@ final nearbyStoresProvider =
 final storeByIdProvider =
     FutureProvider.family<Store?, int>((ref, storeId) async {
   // TEMP: Return dummy data
-  return DummyData.stores.firstWhere((s) => s.id == storeId, orElse: () => DummyData.stores.first);
+  return DummyData.stores
+      .firstWhere((s) => s.id == storeId, orElse: () => DummyData.stores.first);
 });
 
 /// Rough distance estimate using equirectangular approximation.

@@ -24,20 +24,19 @@ class UpiIntentService {
     required int orderId,
     String? note,
   }) {
-    final transactionNote =
-        note ?? 'DashauliConnect-Order-$orderId';
+    final transactionNote = note ?? 'DashauliConnect-Order-$orderId';
 
     return Uri(
       scheme: 'upi',
       host: 'pay',
       queryParameters: {
-        'pa': payeeVpa,           // Payee VPA
-        'pn': payeeName,          // Payee Name
+        'pa': payeeVpa, // Payee VPA
+        'pn': payeeName, // Payee Name
         'am': amount.toStringAsFixed(2), // Amount
-        'cu': 'INR',              // Currency
-        'tn': transactionNote,    // Transaction Note
-        'tr': 'DC$orderId',       // Transaction Reference
-        'mc': '0000',             // Merchant Category (P2P)
+        'cu': 'INR', // Currency
+        'tn': transactionNote, // Transaction Note
+        'tr': 'DC$orderId', // Transaction Reference
+        'mc': '0000', // Merchant Category (P2P)
       },
     );
   }

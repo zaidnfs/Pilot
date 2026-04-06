@@ -52,6 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.backgroundLight, // Stitch Background (Cream)
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -61,86 +62,137 @@ class _LoginScreenState extends State<LoginScreen> {
 
               // ─── Logo / Brand ─────────────────────────────────
               Container(
-                width: 80,
-                height: 80,
+                width: 100,
+                height: 100,
                 decoration: BoxDecoration(
-                  color: AppColors.primary.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(24),
+                  color: AppColors.surfaceLight,
+                  borderRadius: BorderRadius.circular(30),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.primary.withOpacity(0.05),
+                      blurRadius: 20,
+                      offset: const Offset(0, 10),
+                    )
+                  ],
                 ),
                 child: const Icon(
-                  Icons.delivery_dining_rounded,
-                  size: 44,
+                  Icons.storefront_rounded, // Better reflects community connect
+                  size: 50,
                   color: AppColors.primary,
                 ),
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 32),
 
               Text(
                 'Dashauli Connect',
                 style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.primary,
+                      fontWeight: FontWeight.w800,
+                      color: AppColors.textPrimaryLight,
+                      letterSpacing: -0.5,
                     ),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 12),
               Text(
-                'Community-powered delivery.\nZero commission.',
+                'Your Community.\nYour Deliveries.',
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                       color: AppColors.textSecondaryLight,
                       height: 1.4,
+                      fontSize: 16,
                     ),
               ),
 
               const Spacer(flex: 2),
 
               // ─── Phone Input ──────────────────────────────────
-              TextField(
-                controller: _phoneController,
-                keyboardType: TextInputType.phone,
-                maxLength: 10,
-                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
-                  letterSpacing: 1.5,
+              Container(
+                decoration: BoxDecoration(
+                  color: AppColors.surfaceLight,
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: AppColors.borderLight),
                 ),
-                decoration: InputDecoration(
-                  prefixIcon: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: const Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          '🇮🇳 +91',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        SizedBox(width: 8),
-                        SizedBox(
-                          height: 24,
-                          child: VerticalDivider(width: 1),
-                        ),
-                      ],
-                    ),
+                child: TextField(
+                  controller: _phoneController,
+                  keyboardType: TextInputType.phone,
+                  maxLength: 10,
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: 2,
+                    color: AppColors.textPrimaryLight,
                   ),
-                  hintText: 'Phone number',
-                  counterText: '',
-                  errorText: _error,
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    enabledBorder: InputBorder.none,
+                    focusedBorder: InputBorder.none,
+                    prefixIcon: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: const Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            '🇮🇳 +91',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.textPrimaryLight,
+                            ),
+                          ),
+                          SizedBox(width: 12),
+                          SizedBox(
+                            height: 24,
+                            child:
+                                VerticalDivider(width: 1, color: Colors.grey),
+                          ),
+                        ],
+                      ),
+                    ),
+                    hintText: '00000 00000',
+                    hintStyle: TextStyle(
+                      color: AppColors.textSecondaryLight.withOpacity(0.5),
+                      letterSpacing: 2,
+                    ),
+                    counterText: '',
+                  ),
                 ),
               ),
-              const SizedBox(height: 20),
+              if (_error != null) ...[
+                const SizedBox(height: 8),
+                Text(
+                  _error!,
+                  style: const TextStyle(color: AppColors.error, fontSize: 12),
+                ),
+              ],
+              const SizedBox(height: 24),
 
               // ─── CTA Button (in thumb zone) ───────────────────
-              SizedBox(
+              Container(
+                width: double.infinity,
                 height: 56,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  gradient: const LinearGradient(
+                    colors: [AppColors.primary, AppColors.primaryLight],
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.primary.withOpacity(0.2),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
+                    )
+                  ],
+                ),
                 child: ElevatedButton(
                   onPressed: _isLoading ? null : _sendOtp,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primary,
-                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.transparent,
+                    shadowColor: Colors.transparent,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
                   ),
                   child: _isLoading
                       ? const SizedBox(
@@ -151,11 +203,18 @@ class _LoginScreenState extends State<LoginScreen> {
                             color: Colors.white,
                           ),
                         )
-                      : const Text('Continue with OTP'),
+                      : const Text(
+                          'Continue with OTP',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
                 ),
               ),
 
-              const SizedBox(height: 16),
+              const SizedBox(height: 24),
               Text(
                 'By continuing, you agree to our Terms of Service',
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(

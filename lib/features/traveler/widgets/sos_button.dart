@@ -44,8 +44,7 @@ class SosButton extends StatelessWidget {
       builder: (context) => AlertDialog(
         title: const Row(
           children: [
-            Icon(Icons.warning_amber_rounded,
-                color: AppColors.error, size: 28),
+            Icon(Icons.warning_amber_rounded, color: AppColors.error, size: 28),
             SizedBox(width: 8),
             Text('Emergency SOS'),
           ],

@@ -133,8 +133,7 @@ class Order {
         status: OrderStatus.fromString(json['status'] as String),
         deliveryMode: DeliveryMode.fromString(json['delivery_mode'] as String),
         itemsDescription: json['items_description'] as String,
-        itemsEstimatedCost:
-            (json['items_estimated_cost'] as num).toDouble(),
+        itemsEstimatedCost: (json['items_estimated_cost'] as num).toDouble(),
         bounty: (json['bounty'] as num).toDouble(),
         otpCode: json['otp_code'] as String?,
         otpVerified: json['otp_verified'] as bool? ?? false,
@@ -183,6 +182,5 @@ class Order {
 
   double get totalCost => itemsEstimatedCost + bounty;
 
-  bool get isAvailable =>
-      status == OrderStatus.requested && travelerId == null;
+  bool get isAvailable => status == OrderStatus.requested && travelerId == null;
 }
