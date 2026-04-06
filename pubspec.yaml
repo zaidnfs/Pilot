@@ -1,0 +1,75 @@
+name: dashauli_connect
+description: "Peer-to-peer delivery platform for Dashauli & Kursi Road Corridor, Lucknow."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.5.0
+  flutter: ">=3.24.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # Backend & Auth
+  supabase_flutter: ^2.8.0
+  powersync: ^1.8.0
+
+  # State Management
+  flutter_riverpod: ^2.6.0
+  riverpod_annotation: ^2.4.0
+
+  # Routing
+  go_router: ^14.6.0
+
+  # Maps & Location
+  google_maps_flutter: ^2.10.0
+  geolocator: ^13.0.0
+  geocoding: ^3.0.0
+
+  # Payments (UPI Intent)
+  url_launcher: ^6.3.0
+
+  # Aadhaar KYC
+  xml: ^6.5.0
+  encrypt: ^5.0.3
+  file_picker: ^8.1.0
+
+  # UI Components
+  pin_code_fields: ^8.0.1
+  flutter_animate: ^4.5.0
+  cached_network_image: ^3.4.1
+  shimmer: ^3.0.0
+  lottie: ^3.1.0
+
+  # Utilities
+  flutter_dotenv: ^5.2.1
+  json_annotation: ^4.9.0
+  freezed_annotation: ^2.4.4
+  intl: ^0.19.0
+  uuid: ^4.5.1
+  permission_handler: ^11.3.1
+  flutter_phone_direct_caller: ^2.1.1
+  share_plus: ^10.1.0
+  path_provider: ^2.1.4
+
+  # Icons
+  cupertino_icons: ^1.0.8
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+  build_runner: ^2.4.13
+  json_serializable: ^6.8.0
+  freezed: ^2.5.7
+  riverpod_generator: ^2.4.4
+  mockito: ^5.4.4
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - .env
+    - assets/images/
+    - assets/animations/
