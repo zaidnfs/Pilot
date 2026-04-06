@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Identity Verification | Dashauli Connect</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-fixed": "#d8e8c9",
+                        "inverse-on-surface": "#f3f2d3",
+                        "on-primary": "#ffffff",
+                        "primary-fixed": "#c3ebd8",
+                        "on-tertiary-fixed-variant": "#3e4b34",
+                        "surface-container-highest": "#e5e4c5",
+                        "on-background": "#1c1d09",
+                        "surface-container-high": "#ebeacb",
+                        "on-tertiary-container": "#8e9d81",
+                        "inverse-surface": "#31321d",
+                        "on-secondary-fixed": "#002110",
+                        "error": "#ba1a1a",
+                        "on-tertiary": "#ffffff",
+                        "primary-container": "#12372a",
+                        "on-error": "#ffffff",
+                        "inverse-primary": "#a8cfbd",
+                        "surface-bright": "#fcfbdb",
+                        "on-surface": "#1c1d09",
+                        "surface-tint": "#416656",
+                        "on-primary-fixed": "#002116",
+                        "on-error-container": "#93000a",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-container": "#28341f",
+                        "on-primary-fixed-variant": "#2a4e3f",
+                        "on-primary-container": "#7ba190",
+                        "tertiary-fixed-dim": "#bccbae",
+                        "outline-variant": "#c1c8c3",
+                        "surface": "#fcfbdb",
+                        "on-tertiary-fixed": "#131f0c",
+                        "secondary": "#41664e",
+                        "on-surface-variant": "#414844",
+                        "surface-container": "#f1f0d0",
+                        "outline": "#717974",
+                        "secondary-fixed": "#c3ecce",
+                        "tertiary": "#131f0c",
+                        "secondary-fixed-dim": "#a7d0b3",
+                        "on-secondary-fixed-variant": "#2a4e38",
+                        "surface-variant": "#e5e4c5",
+                        "on-secondary": "#ffffff",
+                        "background": "#fcfbdb",
+                        "secondary-container": "#c0eacb",
+                        "surface-container-low": "#f6f5d6",
+                        "primary-fixed-dim": "#a8cfbd",
+                        "primary": "#002116",
+                        "on-secondary-container": "#466b52",
+                        "error-container": "#ffdad6",
+                        "surface-dim": "#dcdcbd"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Plus Jakarta Sans"],
+                        "body": ["Plus Jakarta Sans"],
+                        "label": ["Plus Jakarta Sans"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fcfbdb; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="text-on-surface selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopAppBar -->
+<header class="bg-[#fcfbdb]/80 backdrop-blur-md dark:bg-stone-900/80 fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 py-4">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[#12372a]" data-icon="arrow_back">arrow_back</span>
+<h1 class="font-['Plus_Jakarta_Sans'] text-xl font-bold text-[#12372a]">Dashauli Connect</h1>
+</div>
+<button class="text-[#12372a] opacity-70 font-medium hover:bg-[#f1f0d0] px-4 py-1 rounded-full transition-all duration-400">
+            Switch Mode
+        </button>
+</header>
+<main class="pt-24 pb-32 px-6 max-w-2xl mx-auto">
+<!-- Hero Section / Editorial Intro -->
+<section class="mb-10">
+<div class="inline-flex items-center gap-2 px-3 py-1 bg-secondary-container text-on-secondary-container rounded-full mb-4">
+<span class="material-symbols-outlined text-[18px]" data-icon="verified" style="font-variation-settings: 'FILL' 1;">verified</span>
+<span class="text-[12px] font-bold tracking-wider uppercase">Identity Verification</span>
+</div>
+<h2 class="text-[2.25rem] font-extrabold text-[#12372a] leading-tight mb-4 tracking-tight">Complete your KYC to join the circle.</h2>
+<p class="text-on-surface-variant text-lg leading-relaxed">
+                To maintain a high standard of <span class="font-semibold text-primary">community trust and safety</span>, we require a one-time verification of your identity using Aadhaar.
+            </p>
+</section>
+<!-- Bento Grid Layout for Information & Security -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+<!-- Privacy Card -->
+<div class="bg-surface-container p-6 rounded-3xl flex flex-col justify-between aspect-square md:aspect-auto">
+<div class="bg-surface-container-high w-12 h-12 rounded-2xl flex items-center justify-center mb-4">
+<span class="material-symbols-outlined text-[#12372a]" data-icon="lock" style="font-variation-settings: 'FILL' 1;">lock</span>
+</div>
+<div>
+<h3 class="text-xl font-bold text-[#12372a] mb-2">Privacy First</h3>
+<p class="text-sm text-on-surface-variant">Your XML file stays encrypted. We only extract essential identity details to verify your account.</p>
+</div>
+</div>
+<!-- Trust Card -->
+<div class="bg-[#d8e8c9] p-6 rounded-3xl flex flex-col justify-between aspect-square md:aspect-auto">
+<div class="bg-white/50 w-12 h-12 rounded-2xl flex items-center justify-center mb-4">
+<span class="material-symbols-outlined text-[#12372a]" data-icon="shield_with_heart" style="font-variation-settings: 'FILL' 1;">shield_with_heart</span>
+</div>
+<div>
+<h3 class="text-xl font-bold text-[#12372a] mb-2">Safe Community</h3>
+<p class="text-sm text-on-surface-variant">Verified profiles receive 3x more delivery requests and peer trust scores.</p>
+</div>
+</div>
+</div>
+<!-- Upload Action Section -->
+<div class="bg-surface-container-high rounded-[2rem] p-8 relative overflow-hidden">
+<div class="relative z-10">
+<div class="flex items-center gap-4 mb-6">
+<div class="w-16 h-16 bg-[#12372a] rounded-2xl flex items-center justify-center shadow-lg shadow-[#12372a]/20">
+<span class="material-symbols-outlined text-white text-3xl" data-icon="upload_file">upload_file</span>
+</div>
+<div>
+<h4 class="text-lg font-bold text-[#12372a]">Aadhaar Offline e-KYC</h4>
+<p class="text-sm text-on-surface-variant font-medium">Supported format: XML File</p>
+</div>
+</div>
+<div class="space-y-4">
+<button class="w-full bg-[#12372a] text-white py-5 rounded-2xl font-bold text-lg flex items-center justify-center gap-3 transition-transform active:scale-[0.98] shadow-xl shadow-[#12372a]/10">
+                        Upload Aadhaar File
+                        <span class="material-symbols-outlined" data-icon="add_circle">add_circle</span>
+</button>
+<button class="w-full bg-white text-[#12372a] py-4 rounded-2xl font-semibold text-md flex items-center justify-center gap-2 border border-[#12372a]/5">
+<span class="material-symbols-outlined text-xl" data-icon="help_outline">help_outline</span>
+                        How to get this file?
+                    </button>
+</div>
+<p class="mt-6 text-center text-xs text-on-surface-variant/60 leading-tight">
+                    By uploading, you agree to our Identity Verification Terms. We do not store your Aadhaar number, only the verified status.
+                </p>
+</div>
+<!-- Abstract background shape for "editorial" feel -->
+<div class="absolute -bottom-20 -right-20 w-64 h-64 bg-[#c3ebd8] rounded-full blur-3xl opacity-40"></div>
+</div>
+<!-- Step-by-Step Guide Section -->
+<section class="mt-12">
+<h5 class="text-sm font-bold text-[#12372a] uppercase tracking-widest mb-6 opacity-60">The Process</h5>
+<div class="space-y-6">
+<div class="flex gap-6 items-start">
+<span class="text-4xl font-extrabold text-[#12372a]/10 leading-none">01</span>
+<div>
+<h6 class="font-bold text-[#12372a]">Download XML</h6>
+<p class="text-sm text-on-surface-variant">Visit the UIDAI portal and download your secure offline e-KYC zip file.</p>
+</div>
+</div>
+<div class="flex gap-6 items-start">
+<span class="text-4xl font-extrabold text-[#12372a]/10 leading-none">02</span>
+<div>
+<h6 class="font-bold text-[#12372a]">Upload &amp; Share</h6>
+<p class="text-sm text-on-surface-variant">Upload the file here and provide the 4-digit share code you created.</p>
+</div>
+</div>
+<div class="flex gap-6 items-start">
+<span class="text-4xl font-extrabold text-[#12372a]/10 leading-none">03</span>
+<div>
+<h6 class="font-bold text-[#12372a]">Instantly Verified</h6>
+<p class="text-sm text-on-surface-variant">Get your "Dashauli Verified" badge and start participating in the marketplace.</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar (Suppressed for focused task, but kept contextually if required for shell parity) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-2 bg-[#fcfbdb]/80 backdrop-blur-md shadow-[0_-12px_32px_rgba(18,55,42,0.08)] rounded-t-3xl border-t border-[#12372a]/10">
+<div class="flex flex-col items-center justify-center text-[#12372a] opacity-60 p-3">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="text-[10px] font-bold mt-1">Home</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#12372a] opacity-60 p-3">
+<span class="material-symbols-outlined" data-icon="shopping_bag">shopping_bag</span>
+<span class="text-[10px] font-bold mt-1">My Orders</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#12372a] opacity-60 p-3">
+<span class="material-symbols-outlined" data-icon="local_shipping">local_shipping</span>
+<span class="text-[10px] font-bold mt-1">Tracker</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-[#12372a] text-white rounded-2xl p-3 px-5 transition-all duration-400">
+<span class="material-symbols-outlined" data-icon="person" style="font-variation-settings: 'FILL' 1;">person</span>
+<span class="text-[10px] font-bold mt-1">Profile</span>
+</div>
+</nav>
+</body></html>

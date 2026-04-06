@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Dashauli Connect - Order Tracking</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary-fixed": "#d8e8c9",
+                    "inverse-on-surface": "#f3f2d3",
+                    "on-primary": "#ffffff",
+                    "primary-fixed": "#c3ebd8",
+                    "on-tertiary-fixed-variant": "#3e4b34",
+                    "surface-container-highest": "#e5e4c5",
+                    "on-background": "#1c1d09",
+                    "surface-container-high": "#ebeacb",
+                    "on-tertiary-container": "#8e9d81",
+                    "inverse-surface": "#31321d",
+                    "on-secondary-fixed": "#002110",
+                    "error": "#ba1a1a",
+                    "on-tertiary": "#ffffff",
+                    "primary-container": "#12372a",
+                    "on-error": "#ffffff",
+                    "inverse-primary": "#a8cfbd",
+                    "surface-bright": "#fcfbdb",
+                    "on-surface": "#1c1d09",
+                    "surface-tint": "#416656",
+                    "on-primary-fixed": "#002116",
+                    "on-error-container": "#93000a",
+                    "surface-container-lowest": "#ffffff",
+                    "tertiary-container": "#28341f",
+                    "on-primary-fixed-variant": "#2a4e3f",
+                    "on-primary-container": "#7ba190",
+                    "tertiary-fixed-dim": "#bccbae",
+                    "outline-variant": "#c1c8c3",
+                    "surface": "#fcfbdb",
+                    "on-tertiary-fixed": "#131f0c",
+                    "secondary": "#41664e",
+                    "on-surface-variant": "#414844",
+                    "surface-container": "#f1f0d0",
+                    "outline": "#717974",
+                    "secondary-fixed": "#c3ecce",
+                    "tertiary": "#131f0c",
+                    "secondary-fixed-dim": "#a7d0b3",
+                    "on-secondary-fixed-variant": "#2a4e38",
+                    "surface-variant": "#e5e4c5",
+                    "on-secondary": "#ffffff",
+                    "background": "#fcfbdb",
+                    "secondary-container": "#c0eacb",
+                    "surface-container-low": "#f6f5d6",
+                    "primary-fixed-dim": "#a8cfbd",
+                    "primary": "#002116",
+                    "on-secondary-container": "#466b52",
+                    "error-container": "#ffdad6",
+                    "surface-dim": "#dcdcbd"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Plus Jakarta Sans"],
+                    "body": ["Plus Jakarta Sans"],
+                    "label": ["Plus Jakarta Sans"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .otp-dashed {
+            background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='24' ry='24' stroke='%2341664e' stroke-width='2' stroke-dasharray='12%2c 12' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
+            border-radius: 24px;
+        }
+        .map-texture {
+            background-image: radial-gradient(#12372a 0.5px, transparent 0.5px);
+            background-size: 24px 24px;
+            opacity: 0.05;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface font-body text-on-surface min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="sticky top-0 z-50 bg-[#fcfbdb]/80 backdrop-blur-md dark:bg-stone-900/80 flex justify-between items-center w-full px-6 py-4">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full overflow-hidden bg-primary-container flex items-center justify-center">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="Close up portrait of a friendly smiling man with professional lighting and clean background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBQcHMO97eRuNOxakeZw3Uf9fxmxHl5HmPKxNW3bw_iWx-aGvVSwip4rJz_rZQhm0muBQdJfOfUpMeTEKYbM_lohNhBFUFkWmVwVjzkMrilgQ8CStSHTs92PJJUaewUzR83vwtNkdN-qE_-KeF3LukSzr2oixGKlZwEtpknNp2-pOLNLroZ-or9TpF4LwokFzfLYIL-Zfiw3_f14ptRjINGnwjdNhk3hcwzeFrkv3IhijLGV9U4isgdcmM0Qew1nZaTdanz4H7BAM5O"/>
+</div>
+<h1 class="font-['Plus_Jakarta_Sans'] text-xl font-bold text-[#12372a] dark:text-[#7ba190]">Dashauli Connect</h1>
+</div>
+<button class="text-[#12372a] opacity-70 hover:bg-[#f1f0d0] px-4 py-2 rounded-full font-medium transition-all duration-400">
+            Switch Mode
+        </button>
+</header>
+<main class="max-w-xl mx-auto px-6 pt-4 space-y-8">
+<!-- Tracking Header Section -->
+<section class="space-y-2">
+<span class="label-md font-bold text-secondary tracking-wider uppercase">Order #DC-8821</span>
+<div class="flex items-baseline justify-between">
+<h2 class="headline-md font-semibold text-primary-container">Arriving Soon</h2>
+<p class="text-secondary font-bold">12 mins away</p>
+</div>
+</section>
+<!-- Asymmetric Map Section -->
+<section class="relative h-80 rounded-[2.5rem] overflow-hidden bg-surface-container-low shadow-sm">
+<!-- Decorative Map Elements -->
+<div class="absolute inset-0 map-texture"></div>
+<div class="absolute inset-0 flex items-center justify-center">
+<!-- Mock Map Route SVG -->
+<svg class="w-full h-full p-12 overflow-visible" viewbox="0 0 400 300">
+<path d="M50,250 Q100,200 150,220 T250,150 T350,50" fill="none" opacity="0.2" stroke="#12372a" stroke-dasharray="8 8" stroke-width="3"></path>
+<path d="M50,250 Q100,200 150,220 T210,180" fill="none" stroke="#436850" stroke-linecap="round" stroke-width="4"></path>
+<!-- Store Marker -->
+<circle cx="50" cy="250" fill="#12372a" r="6"></circle>
+<!-- Destination Marker -->
+<circle cx="350" cy="50" fill="#12372a" r="10"></circle>
+<circle cx="350" cy="50" fill="#12372a" opacity="0.1" r="16"></circle>
+<!-- Traveler Icon (Moving) -->
+<g transform="translate(205, 175)">
+<rect fill="#436850" height="24" rx="12" width="24" x="-12" y="-12"></rect>
+<text class="material-symbols-outlined" style="font-size: 16px; fill: white; color: white;" x="-8" y="7">pedal_bike</text>
+</g>
+<!-- Landmark Callout -->
+<g transform="translate(140, 240)">
+<rect fill="white" height="32" rx="16" stroke="#e5e4c5" stroke-width="1" width="120" x="0" y="0"></rect>
+<text class="font-bold text-[10px]" style="font-family: 'Plus Jakarta Sans'; fill: #41664e;" x="12" y="21">Passing the Chowk</text>
+</g>
+</svg>
+</div>
+<!-- Map Overlay: Traveler Card -->
+<div class="absolute bottom-6 left-6 right-6 bg-surface/90 backdrop-blur-sm p-4 rounded-3xl flex items-center gap-4">
+<div class="w-12 h-12 rounded-2xl bg-secondary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary" data-icon="person">person</span>
+</div>
+<div>
+<h3 class="font-bold text-primary-container">Rahul Singh</h3>
+<p class="text-sm opacity-70">Your trusted neighbor traveler</p>
+</div>
+<button class="ml-auto w-10 h-10 rounded-full bg-primary-container text-white flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="call">call</span>
+</button>
+</div>
+</section>
+<!-- CRITICAL FEATURE: OTP Handover -->
+<section class="otp-dashed p-1 bg-secondary">
+<div class="bg-[#FBFADA] rounded-[22px] p-8 text-center space-y-6">
+<div class="space-y-2">
+<h3 class="label-md font-bold text-secondary tracking-[0.2em] uppercase">Handover Verification</h3>
+<p class="body-lg text-on-surface-variant font-medium">OTP Handover Code</p>
+</div>
+<div class="flex justify-center gap-4">
+<div class="w-16 h-20 flex items-center justify-center bg-white rounded-2xl border-2 border-[#ADBC9F] shadow-sm">
+<span class="text-4xl font-extrabold text-[#12372a]">5</span>
+</div>
+<div class="w-16 h-20 flex items-center justify-center bg-white rounded-2xl border-2 border-[#ADBC9F] shadow-sm">
+<span class="text-4xl font-extrabold text-[#12372a]">8</span>
+</div>
+<div class="w-16 h-20 flex items-center justify-center bg-white rounded-2xl border-2 border-[#ADBC9F] shadow-sm">
+<span class="text-4xl font-extrabold text-[#12372a]">3</span>
+</div>
+<div class="w-16 h-20 flex items-center justify-center bg-white rounded-2xl border-2 border-[#ADBC9F] shadow-sm">
+<span class="text-4xl font-extrabold text-[#12372a]">1</span>
+</div>
+</div>
+<div class="pt-4 flex items-start gap-3 text-left max-w-xs mx-auto">
+<span class="material-symbols-outlined text-error mt-0.5" data-icon="verified_user">verified_user</span>
+<p class="text-sm font-medium text-on-surface-variant">
+                        Show this code to your neighbor <span class="text-primary-container font-bold">ONLY</span> when you receive your order.
+                    </p>
+</div>
+</div>
+</section>
+<!-- Order Summary & Status -->
+<section class="grid grid-cols-2 gap-4">
+<div class="bg-surface-container p-6 rounded-[2rem] space-y-3">
+<span class="material-symbols-outlined text-secondary" data-icon="shopping_basket">shopping_basket</span>
+<div>
+<p class="text-xs font-bold text-on-surface-variant uppercase tracking-tighter">Items</p>
+<p class="font-bold text-primary-container">3 Fresh Produce</p>
+</div>
+</div>
+<div class="bg-surface-container p-6 rounded-[2rem] space-y-3">
+<span class="material-symbols-outlined text-secondary" data-icon="location_on">location_on</span>
+<div>
+<p class="text-xs font-bold text-on-surface-variant uppercase tracking-tighter">Destination</p>
+<p class="font-bold text-primary-container truncate">Near Clock Tower</p>
+</div>
+</div>
+</section>
+<!-- Asymmetric Banner for Support -->
+<div class="bg-primary-container p-8 rounded-[2.5rem] flex items-center justify-between overflow-hidden relative">
+<div class="relative z-10 space-y-2">
+<h4 class="text-on-primary font-bold title-lg">Need Help?</h4>
+<p class="text-on-primary-container body-sm">Chat with Rahul or our support team.</p>
+</div>
+<button class="relative z-10 bg-secondary-container text-on-secondary-container px-6 py-3 rounded-full font-bold">
+                Open Chat
+            </button>
+<!-- Decorative circle -->
+<div class="absolute -right-10 -bottom-10 w-40 h-40 bg-on-primary-container/10 rounded-full"></div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-2 bg-[#fcfbdb]/80 backdrop-blur-md dark:bg-stone-900/80 shadow-[0_-12px_32px_rgba(18,55,42,0.08)] rounded-t-3xl border-t border-[#12372a]/10">
+<a class="flex flex-col items-center justify-center text-[#12372a] opacity-60 p-3 hover:bg-[#e5e4c5] rounded-2xl transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[10px] font-bold">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#12372a] opacity-60 p-3 hover:bg-[#e5e4c5] rounded-2xl transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="shopping_bag">shopping_bag</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[10px] font-bold">My Orders</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-[#12372a] text-white rounded-2xl p-3 transition-all scale-95 shadow-lg" href="#">
+<span class="material-symbols-outlined" data-icon="local_shipping">local_shipping</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[10px] font-bold">Tracker</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#12372a] opacity-60 p-3 hover:bg-[#e5e4c5] rounded-2xl transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[10px] font-bold">Profile</span>
+</a>
+</nav>
+</body></html>
