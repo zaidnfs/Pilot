@@ -2,36 +2,105 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../models/order.dart';
 import '../services/supabase_service.dart';
-
-import '../core/dummy_data.dart';
+import 'auth_provider.dart';
 
 /// Provides a stream of the current user's active orders (as requester).
-final requesterOrdersProvider =
-    StreamProvider<List<Order>>((ref) {
-  // TEMP: Return dummy data
-  return Stream.value([DummyData.trackingOrder]);
+final requesterOrdersProvider = StreamProvider<List<Order>>((ref) {
+  final user = ref.watch(currentUserProvider);
+  if (user == null) return Stream.value([]);
+
+  return SupabaseService.client
+      .from('orders')
+      .stream(primaryKey: ['id'])
+      .eq('requester_id', user.id)
+      .order('created_at', ascending: false)
+      .asyncMap((data) async {
+        // Stream doesn't support inFilter, so we filter client-side
+        final activeRows = data.where((row) =>
+            ['requested', 'accepted', 'picked_up'].contains(row['status']));
+
+        final futures = activeRows.map((row) => _expandOrder(
+              row['id'],
+              '*, stores(*), traveler:traveler_id(*)',
+            ));
+
+        final orders = await Future.wait(futures);
+        return orders.whereType<Order>().toList();
+      });
 });
 
 /// Provides a stream of available orders for travelers (status: requested).
-final availableOrdersProvider =
-    StreamProvider<List<Order>>((ref) {
-  // TEMP: Return dummy data
-  return Stream.value(DummyData.availableOrders);
+final availableOrdersProvider = StreamProvider<List<Order>>((ref) {
+  return SupabaseService.client
+      .from('orders')
+      .stream(primaryKey: ['id'])
+      .eq('status', 'requested')
+      .order('created_at', ascending: false)
+      .asyncMap((data) async {
+        final futures = data.map((row) => _expandOrder(
+              row['id'],
+              '*, stores(*), requester:requester_id(*)',
+            ));
+
+        final orders = await Future.wait(futures);
+        return orders.whereType<Order>().toList();
+      });
 });
 
 /// Provides a stream of the current traveler's active delivery.
-final travelerActiveOrderProvider =
-    StreamProvider<Order?>((ref) {
-  // TEMP: Return dummy data
-  return Stream.value(DummyData.activeDelivery);
+final travelerActiveOrderProvider = StreamProvider<Order?>((ref) {
+  final user = ref.watch(currentUserProvider);
+  if (user == null) return Stream.value(null);
+
+  return SupabaseService.client
+      .from('orders')
+      .stream(primaryKey: ['id'])
+      .eq('traveler_id', user.id)
+      .asyncMap((data) async {
+        // Stream doesn't support inFilter or limit, so we handle client-side
+        final activeRow = data.where((row) =>
+            ['accepted', 'picked_up'].contains(row['status'])).firstOrNull;
+
+        if (activeRow == null) return null;
+
+        return await _expandOrder(
+          activeRow['id'],
+          '*, stores(*), requester:requester_id(*)',
+        );
+      });
 });
 
 /// Provides a single order by ID (for tracking screen).
-final orderByIdProvider =
-    StreamProvider.family<Order?, int>((ref, orderId) {
-  // TEMP: Return dummy data
-  return Stream.value(DummyData.trackingOrder);
+final orderByIdProvider = StreamProvider.family<Order?, int>((ref, orderId) {
+  return SupabaseService.client
+      .from('orders')
+      .stream(primaryKey: ['id'])
+      .eq('id', orderId)
+      .asyncMap((data) async {
+        if (data.isEmpty) return null;
+        return await _expandOrder(
+          orderId,
+          '*, stores(*), traveler:traveler_id(*), requester:requester_id(*)',
+        );
+      });
 });
+
+/// Helper to fetch joined data for a single order.
+Future<Order?> _expandOrder(int orderId, String select) async {
+  try {
+    final expanded = await SupabaseService.client
+        .from('orders')
+        .select(select)
+        .eq('id', orderId)
+        .maybeSingle();
+
+    if (expanded == null) return null;
+    return Order.fromJson(expanded);
+  } catch (e) {
+    // Log error and return null to prevent stream crash
+    return null;
+  }
+}
 
 /// Order operations (accept, pickup, cancel).
 class OrderActionsNotifier extends StateNotifier<AsyncValue<void>> {
