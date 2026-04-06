@@ -1,14 +1,12 @@
 import 'dart:typed_data';
-
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/theme/app_colors.dart';
+import '../../../core/utils/aadhaar_parser.dart';
 import '../../../services/aadhaar_kyc_service.dart';
 
-/// Aadhaar Offline e-KYC screen.
-/// User uploads their encrypted Aadhaar XML + 4-digit Share Code.
 class KycScreen extends StatefulWidget {
   const KycScreen({super.key});
 
@@ -17,9 +15,9 @@ class KycScreen extends StatefulWidget {
 }
 
 class _KycScreenState extends State<KycScreen> {
-  final _shareCodeController = TextEditingController();
   Uint8List? _xmlBytes;
   String? _fileName;
+  final _shareCodeController = TextEditingController();
   bool _isLoading = false;
   String? _error;
   String? _successMessage;
@@ -42,6 +40,11 @@ class _KycScreenState extends State<KycScreen> {
         _fileName = result.files.single.name;
         _error = null;
       });
+      // Optionally mock Aadhaar parsing here if needed
+      final mockData = AadhaarParser.parseQr('xml_data');
+      if (mockData != null) {
+        print('Aadhaar data parsed locally (mock)');
+      }
     }
   }
 
@@ -63,20 +66,17 @@ class _KycScreenState extends State<KycScreen> {
     });
 
     try {
-      // Parse the XML
       final result = await AadhaarKycService.processKyc(
         xmlBytes: _xmlBytes!,
         shareCode: shareCode,
       );
 
-      // Upload photo & update profile
       await AadhaarKycService.completeVerification(result: result);
 
       setState(() {
         _successMessage = 'KYC verified as ${result.maskedName}';
       });
 
-      // Navigate to home after delay
       await Future.delayed(const Duration(seconds: 2));
       if (mounted) context.goNamed('home');
     } on KycException catch (e) {
@@ -84,8 +84,6 @@ class _KycScreenState extends State<KycScreen> {
     } catch (e) {
       setState(() => _error = 'Verification failed. Please try again.');
     } finally {
-      // CRITICAL: Purge XML bytes from memory regardless of success/failure.
-      // Raw Aadhaar data must never persist beyond this operation.
       _xmlBytes = null;
       if (mounted) setState(() => _isLoading = false);
     }
@@ -94,12 +92,15 @@ class _KycScreenState extends State<KycScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.backgroundLight,
       appBar: AppBar(
         title: const Text('Identity Verification'),
+        backgroundColor: AppColors.backgroundLight,
         actions: [
           TextButton(
             onPressed: () => context.goNamed('home'),
-            child: const Text('Skip for now'),
+            child: const Text('Skip',
+                style: TextStyle(color: AppColors.primaryLight)),
           ),
         ],
       ),
@@ -109,55 +110,61 @@ class _KycScreenState extends State<KycScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // ─── Instructions ──────────────────────────────────
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: AppColors.info.withOpacity(0.08),
-                  borderRadius: BorderRadius.circular(12),
+              // ─── Bank-like Header ──────────────────────────────
+              Center(
+                child: Container(
+                  width: 80,
+                  height: 80,
+                  decoration: BoxDecoration(
+                    color: AppColors.surfaceLight,
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppColors.primary.withOpacity(0.05),
+                        blurRadius: 15,
+                        offset: const Offset(0, 5),
+                      )
+                    ],
+                  ),
+                  child: const Icon(Icons.verified_user_rounded,
+                      size: 40, color: AppColors.primary),
                 ),
-                child: const Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Icon(Icons.shield_rounded,
-                            color: AppColors.info, size: 20),
-                        SizedBox(width: 8),
-                        Text(
-                          'Why verify?',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.info,
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 8),
-                    Text(
-                      'Aadhaar verification builds trust in the community. '
-                      'Your verified photo is shown to Requesters during delivery. '
-                      'No raw Aadhaar data is stored on our servers.',
-                      style: TextStyle(fontSize: 13, height: 1.5),
-                    ),
-                  ],
+              ),
+              const SizedBox(height: 24),
+              Center(
+                child: Text(
+                  'Secure Verification',
+                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                        fontWeight: FontWeight.w800,
+                        color: AppColors.textPrimaryLight,
+                      ),
+                ),
+              ),
+              const SizedBox(height: 8),
+              Center(
+                child: Text(
+                  'Your data is encrypted and handled securely.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: AppColors.textSecondaryLight),
                 ),
               ),
               const SizedBox(height: 32),
 
               // ─── Step 1: Upload XML ────────────────────────────
               Text(
-                'Step 1: Upload Aadhaar XML',
+                'Step 1: Upload Offline Aadhaar',
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.textPrimaryLight,
                     ),
               ),
               const SizedBox(height: 8),
-              const Text(
-                'Download your Aadhaar XML from mAadhaar app or myaadhaar.uidai.gov.in',
-                style: TextStyle(fontSize: 13, color: AppColors.textSecondaryLight),
+              Text(
+                'Select the downloaded XML file',
+                style: TextStyle(
+                    fontSize: 13, color: AppColors.textSecondaryLight),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 16),
 
               GestureDetector(
                 onTap: _pickXmlFile,
@@ -165,33 +172,42 @@ class _KycScreenState extends State<KycScreen> {
                   width: double.infinity,
                   padding: const EdgeInsets.all(24),
                   decoration: BoxDecoration(
+                    color: AppColors.surfaceLight,
                     border: Border.all(
                       color: _fileName != null
                           ? AppColors.success
                           : AppColors.borderLight,
                       width: _fileName != null ? 2 : 1,
                     ),
-                    borderRadius: BorderRadius.circular(14),
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.02),
+                        blurRadius: 10,
+                        offset: const Offset(0, 4),
+                      )
+                    ],
                   ),
                   child: Column(
                     children: [
                       Icon(
                         _fileName != null
                             ? Icons.check_circle_rounded
-                            : Icons.upload_file_rounded,
-                        size: 40,
+                            : Icons.cloud_upload_rounded,
+                        size: 48,
                         color: _fileName != null
                             ? AppColors.success
-                            : AppColors.textSecondaryLight,
+                            : AppColors.primaryLight,
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: 12),
                       Text(
-                        _fileName ?? 'Tap to select XML file',
+                        _fileName ?? 'Tap to select file',
                         style: TextStyle(
                           color: _fileName != null
                               ? AppColors.success
-                              : AppColors.textSecondaryLight,
-                          fontWeight: FontWeight.w500,
+                              : AppColors.textPrimaryLight,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
                         ),
                       ),
                     ],
@@ -202,32 +218,45 @@ class _KycScreenState extends State<KycScreen> {
 
               // ─── Step 2: Share Code ────────────────────────────
               Text(
-                'Step 2: Enter Share Code',
+                'Step 2: Enter Passcode',
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.textPrimaryLight,
                     ),
               ),
               const SizedBox(height: 8),
-              const Text(
-                'The 4-digit code you set when downloading the XML',
-                style: TextStyle(fontSize: 13, color: AppColors.textSecondaryLight),
+              Text(
+                'Enter the 4-digit code to unlock your file',
+                style: TextStyle(
+                    fontSize: 13, color: AppColors.textSecondaryLight),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 16),
 
-              TextField(
-                controller: _shareCodeController,
-                keyboardType: TextInputType.number,
-                maxLength: 4,
-                obscureText: true,
-                style: const TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.w600,
-                  letterSpacing: 8,
+              Container(
+                decoration: BoxDecoration(
+                  color: AppColors.surfaceLight,
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: AppColors.borderLight),
                 ),
-                textAlign: TextAlign.center,
-                decoration: const InputDecoration(
-                  counterText: '',
-                  hintText: '• • • •',
+                child: TextField(
+                  controller: _shareCodeController,
+                  keyboardType: TextInputType.number,
+                  maxLength: 4,
+                  obscureText: true,
+                  style: const TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 16,
+                    color: AppColors.primary,
+                  ),
+                  textAlign: TextAlign.center,
+                  decoration: const InputDecoration(
+                    counterText: '',
+                    hintText: '••••',
+                    border: InputBorder.none,
+                    enabledBorder: InputBorder.none,
+                    focusedBorder: InputBorder.none,
+                  ),
                 ),
               ),
 
@@ -237,7 +266,7 @@ class _KycScreenState extends State<KycScreen> {
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
                     color: AppColors.error.withOpacity(0.08),
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(12),
                   ),
                   child: Row(
                     children: [
@@ -262,7 +291,7 @@ class _KycScreenState extends State<KycScreen> {
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
                     color: AppColors.success.withOpacity(0.08),
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(12),
                   ),
                   child: Row(
                     children: [
@@ -279,27 +308,51 @@ class _KycScreenState extends State<KycScreen> {
                 ),
               ],
 
-              const SizedBox(height: 32),
+              const SizedBox(height: 48),
 
               // ─── Verify Button ────────────────────────────────
-              SizedBox(
+              Container(
+                width: double.infinity,
                 height: 56,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  gradient: const LinearGradient(
+                    colors: [AppColors.primary, AppColors.primaryLight],
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.primary.withOpacity(0.3),
+                      blurRadius: 12,
+                      offset: const Offset(0, 6),
+                    )
+                  ],
+                ),
                 child: ElevatedButton(
                   onPressed: _isLoading ? null : _processKyc,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primary,
-                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.transparent,
+                    shadowColor: Colors.transparent,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
                   ),
                   child: _isLoading
                       ? const SizedBox(
                           width: 24,
                           height: 24,
                           child: CircularProgressIndicator(
-                            strokeWidth: 2.5,
+                              strokeWidth: 2.5, color: Colors.white),
+                        )
+                      : const Text(
+                          'Securely Verify Identity',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
                             color: Colors.white,
                           ),
-                        )
-                      : const Text('Verify Identity'),
+                        ),
                 ),
               ),
             ],

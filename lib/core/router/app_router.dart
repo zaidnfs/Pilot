@@ -28,7 +28,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       // Uncomment the lines below to re-enable authentication.
       // if (!isAuthenticated && !isAuthRoute) return '/login';
       // if (isAuthenticated && isAuthRoute) return '/home';
-      
+
       if (state.matchedLocation == '/') return '/home';
       return null;
     },

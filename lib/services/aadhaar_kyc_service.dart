@@ -93,9 +93,7 @@ class AadhaarKycService {
       final photoBytes = base64Decode(result.photoBase64!);
       final storagePath = 'kyc-photos/$userId.jpg';
 
-      await SupabaseService.client.storage
-          .from('kyc-private')
-          .uploadBinary(
+      await SupabaseService.client.storage.from('kyc-private').uploadBinary(
             storagePath,
             photoBytes,
             fileOptions: const FileOptions(

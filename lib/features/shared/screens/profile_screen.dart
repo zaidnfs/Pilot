@@ -34,7 +34,9 @@ class ProfileScreen extends ConsumerWidget {
                       radius: 48,
                       backgroundColor: AppColors.primary.withOpacity(0.1),
                       child: Text(
-                        p.fullName.isNotEmpty ? p.fullName[0].toUpperCase() : '?',
+                        p.fullName.isNotEmpty
+                            ? p.fullName[0].toUpperCase()
+                            : '?',
                         style: const TextStyle(
                           fontSize: 36,
                           fontWeight: FontWeight.w700,
@@ -64,16 +66,14 @@ class ProfileScreen extends ConsumerWidget {
                 icon: p.aadhaarVerified
                     ? Icons.verified_user_rounded
                     : Icons.shield_outlined,
-                iconColor: p.aadhaarVerified
-                    ? AppColors.success
-                    : AppColors.warning,
+                iconColor:
+                    p.aadhaarVerified ? AppColors.success : AppColors.warning,
                 title: 'Aadhaar KYC',
                 subtitle: p.aadhaarVerified
                     ? 'Verified as ${p.aadhaarMaskedName}'
                     : 'Not verified — tap to complete',
-                onTap: p.aadhaarVerified
-                    ? null
-                    : () => context.pushNamed('kyc'),
+                onTap:
+                    p.aadhaarVerified ? null : () => context.pushNamed('kyc'),
               ),
               const SizedBox(height: 12),
 
@@ -82,7 +82,8 @@ class ProfileScreen extends ConsumerWidget {
                 icon: Icons.account_balance_wallet_outlined,
                 iconColor: AppColors.primary,
                 title: 'UPI ID',
-                subtitle: p.upiId ?? 'Not set — required for receiving payments',
+                subtitle:
+                    p.upiId ?? 'Not set — required for receiving payments',
                 onTap: () => _showUpiDialog(context, ref, p.upiId),
               ),
               const SizedBox(height: 12),
@@ -189,9 +190,8 @@ class _InfoTile extends StatelessWidget {
         ),
         title: Text(title, style: const TextStyle(fontWeight: FontWeight.w600)),
         subtitle: Text(subtitle, style: const TextStyle(fontSize: 13)),
-        trailing: onTap != null
-            ? const Icon(Icons.chevron_right_rounded)
-            : null,
+        trailing:
+            onTap != null ? const Icon(Icons.chevron_right_rounded) : null,
         onTap: onTap,
       ),
     );

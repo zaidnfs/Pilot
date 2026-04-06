@@ -18,7 +18,8 @@ class PowerSyncService {
   /// Call this after Supabase auth is ready.
   static Future<void> initialize() async {
     // TODO: Implement PowerSync initialization
-    debugPrint('[PowerSync] Initialization placeholder — configure in production');
+    debugPrint(
+        '[PowerSync] Initialization placeholder — configure in production');
   }
 
   /// Check if the device is currently online.

@@ -7,8 +7,8 @@ import '../../../core/theme/app_colors.dart';
 /// For Requester: displays the 4-digit OTP prominently.
 /// For Traveler: displays an input field to enter the OTP from the Requester.
 ///
-/// Per PRD: OTP is ONLY visible to the Requester.
-/// The Traveler must ask the Requester verbally for the code.
+/// Per design update: OTP must be large, high-contrast (#12372A on #FBFADA)
+/// for outdoor visibility in Dashauli.
 class OtpHandoverWidget extends StatelessWidget {
   final String otpCode;
   final bool isRequester;
@@ -22,61 +22,67 @@ class OtpHandoverWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: isRequester
-              ? [AppColors.primary, AppColors.primaryDark]
-              : [AppColors.accent, AppColors.accentDark],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.circular(16),
+        color: AppColors.backgroundLight, // Cream background for high contrast
+        borderRadius: BorderRadius.circular(20),
+        border:
+            Border.all(color: AppColors.primary, width: 2), // Prominent border
         boxShadow: [
           BoxShadow(
-            color: (isRequester ? AppColors.primary : AppColors.accent)
-                .withOpacity(0.3),
-            blurRadius: 12,
-            offset: const Offset(0, 4),
+            color: AppColors.primary.withOpacity(0.1),
+            blurRadius: 15,
+            offset: const Offset(0, 5),
           ),
         ],
       ),
       child: Column(
         children: [
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(Icons.lock_rounded, color: Colors.white, size: 20),
+              const Icon(Icons.security_rounded,
+                  color: AppColors.primary, size: 24),
               const SizedBox(width: 8),
               Text(
-                isRequester ? 'Your Delivery Code' : 'Enter Delivery Code',
+                isRequester ? 'Secure Delivery Code' : 'Enter Delivery Code',
                 style: const TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 14,
+                  color: AppColors.primary,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 16,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 16),
-
+          const SizedBox(height: 20),
           if (isRequester) ...[
-            // Requester sees the OTP
-            Text(
-              otpCode,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 48,
-                fontWeight: FontWeight.w800,
-                letterSpacing: 16,
+            // Requester sees the OTP with massive, high-contrast text
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+              decoration: BoxDecoration(
+                color: AppColors.surfaceLight,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: AppColors.borderLight),
+              ),
+              child: Text(
+                otpCode,
+                style: const TextStyle(
+                  color: AppColors.primary, // #12372A dark text
+                  fontSize: 52, // Huge size for outdoor visibility
+                  fontWeight: FontWeight.w900,
+                  letterSpacing: 20,
+                ),
+                textAlign: TextAlign.center,
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 16),
             const Text(
-              'Share this code with your Traveler\nat the time of delivery',
+              'Share this code with your Traveler\nONLY when they arrive with your items.',
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: Colors.white70,
-                fontSize: 12,
+                color: AppColors.textSecondaryLight,
+                fontSize: 13,
+                fontWeight: FontWeight.w500,
               ),
             ),
           ] else ...[
@@ -85,11 +91,12 @@ class OtpHandoverWidget extends StatelessWidget {
               'Ask the Requester for the\n4-digit delivery code',
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: Colors.white,
+                color: AppColors.primary,
                 fontSize: 16,
-                fontWeight: FontWeight.w500,
+                fontWeight: FontWeight.w600,
               ),
             ),
+            // Input field would go here for traveler, handled in delivery_complete_screen
           ],
         ],
       ),

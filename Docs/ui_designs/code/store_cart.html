@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Dashauli Connect - Store &amp; Cart</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #fcfbdb;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .headline-md { font-size: 1.75rem; line-height: 2.25rem; }
+        .label-md { font-size: 0.75rem; line-height: 1rem; }
+        .semi-bold { font-weight: 600; }
+        .bold { font-weight: 700; }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "tertiary-fixed": "#d8e8c9",
+                      "inverse-on-surface": "#f3f2d3",
+                      "on-primary": "#ffffff",
+                      "primary-fixed": "#c3ebd8",
+                      "on-tertiary-fixed-variant": "#3e4b34",
+                      "surface-container-highest": "#e5e4c5",
+                      "on-background": "#1c1d09",
+                      "surface-container-high": "#ebeacb",
+                      "on-tertiary-container": "#8e9d81",
+                      "inverse-surface": "#31321d",
+                      "on-secondary-fixed": "#002110",
+                      "error": "#ba1a1a",
+                      "on-tertiary": "#ffffff",
+                      "primary-container": "#12372a",
+                      "on-error": "#ffffff",
+                      "inverse-primary": "#a8cfbd",
+                      "surface-bright": "#fcfbdb",
+                      "on-surface": "#1c1d09",
+                      "surface-tint": "#416656",
+                      "on-primary-fixed": "#002116",
+                      "on-error-container": "#93000a",
+                      "surface-container-lowest": "#ffffff",
+                      "tertiary-container": "#28341f",
+                      "on-primary-fixed-variant": "#2a4e3f",
+                      "on-primary-container": "#7ba190",
+                      "tertiary-fixed-dim": "#bccbae",
+                      "outline-variant": "#c1c8c3",
+                      "surface": "#fcfbdb",
+                      "on-tertiary-fixed": "#131f0c",
+                      "secondary": "#41664e",
+                      "on-surface-variant": "#414844",
+                      "surface-container": "#f1f0d0",
+                      "outline": "#717974",
+                      "secondary-fixed": "#c3ecce",
+                      "tertiary": "#131f0c",
+                      "secondary-fixed-dim": "#a7d0b3",
+                      "on-secondary-fixed-variant": "#2a4e38",
+                      "surface-variant": "#e5e4c5",
+                      "on-secondary": "#ffffff",
+                      "background": "#fcfbdb",
+                      "secondary-container": "#c0eacb",
+                      "surface-container-low": "#f6f5d6",
+                      "primary-fixed-dim": "#a8cfbd",
+                      "primary": "#002116",
+                      "on-secondary-container": "#466b52",
+                      "error-container": "#ffdad6",
+                      "surface-dim": "#dcdcbd"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              }
+            },
+          },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface min-h-screen pb-32">
+<!-- Top App Bar -->
+<header class="fixed top-0 left-0 right-0 z-50 bg-[#fcfbdb]/80 backdrop-blur-md flex justify-between items-center w-full px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Close up portrait of a friendly local man smiling in a sunlit outdoor setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCSsGzs8Yft-6YTQlvN291gU0Apdq1jvVMM1wl2aOYiN_PY-CFoMGPC8gHIyoc5zZwhLcr8Jv2ubQZY_WN83UZDA6c5_JyBUXMJG230l28qqxWWJabMXVkb1hssQ1Gt7tyArqkhj5HAw_9qVgDghJQmV8GQSP9P_2TSLDZ2ZQ1qR2B904hrCy-V52P4fe9Q3u366vA9LO4wTMVMdOhYQgqA3WHEHoZoEgXf_Pgfq6B92zkWwYkF9O9_7LUJjTA2rVo4hMeOFXuheueg"/>
+</div>
+<h1 class="font-['Plus_Jakarta_Sans'] headline-md semi-bold text-[#12372a]">Dashauli Connect</h1>
+</div>
+<button class="bg-[#12372a] text-white rounded-full px-4 py-2 text-sm font-medium transition-transform active:scale-95">
+            Switch Mode
+        </button>
+</header>
+<main class="pt-24 px-6 max-w-5xl mx-auto space-y-12">
+<!-- Store View Section -->
+<section>
+<div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+<div>
+<span class="text-secondary font-bold label-md tracking-wider uppercase">Local Kirana</span>
+<h2 class="text-3xl font-extrabold text-primary-container leading-tight">Sharma's Daily Essentials</h2>
+<p class="text-on-surface-variant body-lg">Near Main Market Square • 15 min delivery window</p>
+</div>
+<div class="flex items-center gap-2 bg-surface-container px-4 py-2 rounded-xl">
+<span class="material-symbols-outlined text-secondary">verified</span>
+<span class="text-sm font-semibold text-secondary">Trusted Neighbor Store</span>
+</div>
+</div>
+<!-- Bento Grid Items -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- Item 1 -->
+<div class="bg-surface-variant p-6 rounded-2xl flex flex-col justify-between group transition-all hover:bg-surface-container-high">
+<div class="flex justify-between items-start mb-4">
+<div class="space-y-1">
+<h3 class="text-xl font-bold text-primary-container">Fresh Whole Milk</h3>
+<p class="text-sm text-on-surface-variant">500ml pouch • Dairy</p>
+</div>
+<span class="text-lg font-extrabold text-primary-container">₹32</span>
+</div>
+<button class="w-full bg-primary-container text-white py-4 rounded-xl flex items-center justify-center gap-2 font-bold transition-all active:scale-95">
+<span class="material-symbols-outlined">add</span>
+                        Add to Cart
+                    </button>
+</div>
+<!-- Item 2 -->
+<div class="bg-surface-variant p-6 rounded-2xl flex flex-col justify-between group transition-all hover:bg-surface-container-high">
+<div class="flex justify-between items-start mb-4">
+<div class="space-y-1">
+<h3 class="text-xl font-bold text-primary-container">Artisan Brown Bread</h3>
+<p class="text-sm text-on-surface-variant">400g pack • Bakery</p>
+</div>
+<span class="text-lg font-extrabold text-primary-container">₹45</span>
+</div>
+<button class="w-full bg-primary-container text-white py-4 rounded-xl flex items-center justify-center gap-2 font-bold transition-all active:scale-95">
+<span class="material-symbols-outlined">add</span>
+                        Add to Cart
+                    </button>
+</div>
+<!-- Item 3 -->
+<div class="bg-surface-variant p-6 rounded-2xl flex flex-col justify-between group transition-all hover:bg-surface-container-high">
+<div class="flex justify-between items-start mb-4">
+<div class="space-y-1">
+<h3 class="text-xl font-bold text-primary-container">Farm Fresh Eggs</h3>
+<p class="text-sm text-on-surface-variant">Pack of 6 • Poultry</p>
+</div>
+<span class="text-lg font-extrabold text-primary-container">₹48</span>
+</div>
+<button class="w-full bg-primary-container text-white py-4 rounded-xl flex items-center justify-center gap-2 font-bold transition-all active:scale-95">
+<span class="material-symbols-outlined">add</span>
+                        Add to Cart
+                    </button>
+</div>
+</div>
+</section>
+<!-- Cart & Checkout Section -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start pb-20">
+<!-- Order Summary -->
+<div class="lg:col-span-7 space-y-6">
+<h2 class="headline-md semi-bold text-primary-container">Your Basket</h2>
+<div class="space-y-4">
+<div class="flex items-center justify-between p-4 bg-surface-container-low rounded-xl">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-surface-container-highest rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-primary-container">egg</span>
+</div>
+<div>
+<p class="font-bold text-primary-container">Farm Fresh Eggs (x1)</p>
+<p class="text-xs text-on-surface-variant">Verified Fresh Today</p>
+</div>
+</div>
+<p class="font-bold text-primary-container">₹48</p>
+</div>
+<div class="flex items-center justify-between p-4 bg-surface-container-low rounded-xl">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-surface-container-highest rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-primary-container">breakfast_dining</span>
+</div>
+<div>
+<p class="font-bold text-primary-container">Artisan Brown Bread (x1)</p>
+<p class="text-xs text-on-surface-variant">Whole Grain</p>
+</div>
+</div>
+<p class="font-bold text-primary-container">₹45</p>
+</div>
+</div>
+<!-- Payment Info Card -->
+<div class="bg-surface-container p-6 rounded-3xl space-y-4">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-container" style="font-variation-settings: 'FILL' 1;">account_balance_wallet</span>
+<h3 class="text-lg font-bold text-primary-container">P2P Payment via UPI</h3>
+</div>
+<p class="text-on-surface-variant body-lg leading-relaxed">
+                        Dashauli Connect uses direct peer-to-peer transfers. Your <span class="font-bold">money goes directly to your neighbor</span> who is helping with the delivery. Simple, fast, and community-driven.
+                    </p>
+</div>
+</div>
+<!-- Cost Breakdown & CTA -->
+<div class="lg:col-span-5 bg-surface-container-highest p-8 rounded-[2rem] sticky top-28">
+<h3 class="text-xl font-extrabold text-primary-container mb-6">Payment Summary</h3>
+<div class="space-y-4 mb-8">
+<div class="flex justify-between text-on-surface-variant">
+<span>Item Total</span>
+<span>₹93</span>
+</div>
+<div class="flex justify-between text-on-surface-variant">
+<span>Delivery Fee</span>
+<span class="text-secondary font-bold uppercase text-xs">Free</span>
+</div>
+<div class="flex justify-between items-center py-3 px-4 bg-secondary/10 rounded-xl">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-sm" style="font-variation-settings: 'FILL' 1;">volunteer_activism</span>
+<span class="text-[#436850] font-bold">Traveler Bounty</span>
+</div>
+<span class="text-[#436850] font-bold">₹15</span>
+</div>
+<!-- Dash Divider -->
+<div class="border-t-2 border-dashed border-[#ADBC9F] my-4"></div>
+<div class="flex justify-between items-baseline pt-2">
+<span class="text-lg font-bold text-primary-container">Total Payable</span>
+<span class="text-3xl font-extrabold text-[#12372a]">₹108</span>
+</div>
+</div>
+<button class="w-full bg-primary-container text-on-primary py-5 rounded-2xl text-lg font-extrabold flex items-center justify-center gap-3 shadow-xl shadow-primary-container/10 transition-all hover:scale-[1.02] active:scale-95">
+                    Proceed to Pay
+                    <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+<p class="text-center text-[10px] text-on-surface-variant mt-4 uppercase tracking-widest font-bold">Secure Encrypted Transaction</p>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-2 bg-[#fcfbdb]/80 backdrop-blur-md shadow-[0_-12px_32px_rgba(18,55,42,0.08)] border-t border-[#12372a]/10">
+<div class="flex flex-col items-center justify-center text-[#12372a] opacity-60 p-3 hover:bg-[#e5e4c5] rounded-2xl transition-all">
+<span class="material-symbols-outlined">home</span>
+<span class="font-['Plus_Jakarta_Sans'] label-md bold">Home</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-[#12372a] text-white rounded-2xl p-3 transition-all scale-105 shadow-lg">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">shopping_bag</span>
+<span class="font-['Plus_Jakarta_Sans'] label-md bold">My Orders</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#12372a] opacity-60 p-3 hover:bg-[#e5e4c5] rounded-2xl transition-all">
+<span class="material-symbols-outlined">local_shipping</span>
+<span class="font-['Plus_Jakarta_Sans'] label-md bold">Tracker</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#12372a] opacity-60 p-3 hover:bg-[#e5e4c5] rounded-2xl transition-all">
+<span class="material-symbols-outlined">person</span>
+<span class="font-['Plus_Jakarta_Sans'] label-md bold">Profile</span>
+</div>
+</nav>
+</body></html>

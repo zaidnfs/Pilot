@@ -2,15 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../core/theme/app_colors.dart';
 import '../../../core/constants/app_constants.dart';
-import '../../../providers/stores_provider.dart';
-import '../../../providers/orders_provider.dart';
+import '../../../core/theme/app_colors.dart';
+import '../../../core/utils/upi_generator.dart';
 import '../../../providers/location_provider.dart';
+import '../../../providers/orders_provider.dart';
+import '../../../providers/stores_provider.dart';
 import '../../../services/supabase_service.dart';
 
-/// Order creation screen for the Requester.
-/// Select items, set bounty, choose delivery mode, and submit.
+/// Screen to create a new delivery request (Order).
+/// Requester enters items, estimated cost, and delivery bounty.
 class CreateOrderScreen extends ConsumerStatefulWidget {
   final int storeId;
 
@@ -23,7 +24,7 @@ class CreateOrderScreen extends ConsumerStatefulWidget {
 class _CreateOrderScreenState extends ConsumerState<CreateOrderScreen> {
   final _itemsController = TextEditingController();
   final _costController = TextEditingController();
-  final _bountyController = TextEditingController(text: '15');
+  final _bountyController = TextEditingController();
   String _deliveryMode = 'standard';
   bool _isSubmitting = false;
 
@@ -49,7 +50,8 @@ class _CreateOrderScreenState extends ConsumerState<CreateOrderScreen> {
       return;
     }
     if (bounty == null || bounty < AppConstants.minBounty) {
-      _showError('Minimum delivery bounty is ₹${AppConstants.minBounty.toInt()}');
+      _showError(
+          'Minimum delivery bounty is ₹${AppConstants.minBounty.toInt()}');
       return;
     }
 
@@ -80,6 +82,15 @@ class _CreateOrderScreenState extends ConsumerState<CreateOrderScreen> {
       });
 
       if (order != null && mounted) {
+        // Mock UPI intent generation check before navigation
+        final upiLink = UpiGenerator.generateUpiLink(
+          payeeAddress: 'dashauli@upi',
+          payeeName: 'Dashauli Connect',
+          amount: cost + bounty,
+          transactionNote: 'Order #${order.id}',
+        );
+        print('Ready to pay with: $upiLink'); // Just for demonstration
+
         context.pushReplacementNamed('trackOrder',
             pathParameters: {'orderId': order.id.toString()});
       }
@@ -101,39 +112,62 @@ class _CreateOrderScreenState extends ConsumerState<CreateOrderScreen> {
     final store = ref.watch(storeByIdProvider(widget.storeId));
 
     return Scaffold(
-      appBar: AppBar(title: const Text('New Order')),
+      backgroundColor: AppColors.backgroundLight,
+      appBar: AppBar(
+        title: const Text('New Order'),
+        backgroundColor: AppColors.backgroundLight,
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // ─── Store Info ────────────────────────────────────
               store.when(
-                loading: () => const LinearProgressIndicator(),
+                loading: () =>
+                    const LinearProgressIndicator(color: AppColors.primary),
                 error: (_, __) => const Text('Store not found'),
                 data: (s) => s != null
                     ? Container(
-                        padding: const EdgeInsets.all(16),
+                        padding: const EdgeInsets.all(20),
                         decoration: BoxDecoration(
-                          color: AppColors.primary.withOpacity(0.05),
-                          borderRadius: BorderRadius.circular(14),
+                          color: AppColors.surfaceLight,
+                          borderRadius: BorderRadius.circular(20),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.03),
+                              blurRadius: 10,
+                              offset: const Offset(0, 4),
+                            )
+                          ],
+                          border: Border.all(color: AppColors.borderLight),
                         ),
                         child: Row(
                           children: [
-                            const Icon(Icons.storefront_rounded,
-                                color: AppColors.primary),
-                            const SizedBox(width: 12),
+                            Container(
+                              padding: const EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                color: AppColors.accentLight.withOpacity(0.3),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: const Icon(Icons.storefront_rounded,
+                                  color: AppColors.primary, size: 28),
+                            ),
+                            const SizedBox(width: 16),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(s.name,
                                       style: const TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 16)),
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 18,
+                                          color: AppColors.textPrimaryLight)),
+                                  const SizedBox(height: 4),
                                   Text(s.address,
-                                      style: const TextStyle(fontSize: 13,
+                                      style: const TextStyle(
+                                          fontSize: 13,
                                           color: AppColors.textSecondaryLight)),
                                 ],
                               ),
@@ -143,18 +177,26 @@ class _CreateOrderScreenState extends ConsumerState<CreateOrderScreen> {
                       )
                     : const SizedBox.shrink(),
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 32),
 
               // ─── Items Description ─────────────────────────────
               Text('What do you need?',
-                  style: Theme.of(context).textTheme.titleMedium
-                      ?.copyWith(fontWeight: FontWeight.w600)),
-              const SizedBox(height: 8),
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.textPrimaryLight)),
+              const SizedBox(height: 12),
               TextField(
                 controller: _itemsController,
-                maxLines: 3,
-                decoration: const InputDecoration(
+                maxLines: 4,
+                style: const TextStyle(color: AppColors.textPrimaryLight),
+                decoration: InputDecoration(
                   hintText: 'e.g. 1 packet bread, 6 eggs, 1L milk',
+                  filled: true,
+                  fillColor: AppColors.surfaceLight,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(16),
+                    borderSide: BorderSide(color: AppColors.borderLight),
+                  ),
                 ),
               ),
               const SizedBox(height: 24),
@@ -167,14 +209,24 @@ class _CreateOrderScreenState extends ConsumerState<CreateOrderScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text('Estimated Cost',
-                            style: TextStyle(fontWeight: FontWeight.w600)),
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.textPrimaryLight)),
                         const SizedBox(height: 8),
                         TextField(
                           controller: _costController,
                           keyboardType: TextInputType.number,
-                          decoration: const InputDecoration(
+                          style: const TextStyle(
+                              fontWeight: FontWeight.w700, fontSize: 18),
+                          decoration: InputDecoration(
                             prefixText: '₹ ',
-                            hintText: '100',
+                            prefixStyle: const TextStyle(
+                                fontWeight: FontWeight.w700,
+                                color: AppColors.primary,
+                                fontSize: 18),
+                            hintText: '0',
+                            filled: true,
+                            fillColor: AppColors.surfaceLight,
                           ),
                         ),
                       ],
@@ -186,14 +238,24 @@ class _CreateOrderScreenState extends ConsumerState<CreateOrderScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text('Delivery Bounty',
-                            style: TextStyle(fontWeight: FontWeight.w600)),
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.textPrimaryLight)),
                         const SizedBox(height: 8),
                         TextField(
                           controller: _bountyController,
                           keyboardType: TextInputType.number,
-                          decoration: const InputDecoration(
+                          style: const TextStyle(
+                              fontWeight: FontWeight.w700, fontSize: 18),
+                          decoration: InputDecoration(
                             prefixText: '₹ ',
+                            prefixStyle: const TextStyle(
+                                fontWeight: FontWeight.w700,
+                                color: AppColors.accent,
+                                fontSize: 18),
                             hintText: '15',
+                            filled: true,
+                            fillColor: AppColors.surfaceLight,
                           ),
                         ),
                       ],
@@ -201,12 +263,15 @@ class _CreateOrderScreenState extends ConsumerState<CreateOrderScreen> {
                   ),
                 ],
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 32),
 
               // ─── Delivery Mode ─────────────────────────────────
-              const Text('Delivery Mode',
-                  style: TextStyle(fontWeight: FontWeight.w600)),
-              const SizedBox(height: 8),
+              const Text('Delivery Speed',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 16,
+                      color: AppColors.textPrimaryLight)),
+              const SizedBox(height: 12),
               Row(
                 children: [
                   Expanded(
@@ -215,40 +280,66 @@ class _CreateOrderScreenState extends ConsumerState<CreateOrderScreen> {
                       title: 'Standard',
                       subtitle: 'Wait for a passing Traveler',
                       isSelected: _deliveryMode == 'standard',
-                      onTap: () =>
-                          setState(() => _deliveryMode = 'standard'),
+                      onTap: () => setState(() => _deliveryMode = 'standard'),
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: 16),
                   Expanded(
                     child: _ModeCard(
                       icon: Icons.bolt_rounded,
                       title: 'Express',
                       subtitle: 'Wider broadcast, faster pickup',
                       isSelected: _deliveryMode == 'express',
-                      onTap: () =>
-                          setState(() => _deliveryMode = 'express'),
+                      onTap: () => setState(() => _deliveryMode = 'express'),
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 32),
+              const SizedBox(height: 48),
 
               // ─── Submit ────────────────────────────────────────
-              SizedBox(
+              Container(
+                width: double.infinity,
                 height: 56,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  gradient: const LinearGradient(
+                    colors: [AppColors.primary, AppColors.primaryLight],
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.primary.withOpacity(0.3),
+                      blurRadius: 12,
+                      offset: const Offset(0, 4),
+                    )
+                  ],
+                ),
                 child: ElevatedButton(
                   onPressed: _isSubmitting ? null : _submitOrder,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primary,
-                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.transparent,
+                    shadowColor: Colors.transparent,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16)),
                   ),
                   child: _isSubmitting
                       ? const SizedBox(
-                          width: 24, height: 24,
+                          width: 24,
+                          height: 24,
                           child: CircularProgressIndicator(
                               strokeWidth: 2.5, color: Colors.white))
-                      : const Text('Place Order'),
+                      : const Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.payment_rounded, color: Colors.white),
+                            SizedBox(width: 8),
+                            Text('Pay via UPI & Request',
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white)),
+                          ],
+                        ),
                 ),
               ),
             ],
@@ -278,28 +369,51 @@ class _ModeCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.all(14),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
+          color: isSelected
+              ? AppColors.accentLight.withOpacity(0.3)
+              : AppColors.surfaceLight,
           border: Border.all(
             color: isSelected ? AppColors.primary : AppColors.borderLight,
             width: isSelected ? 2 : 1,
           ),
-          borderRadius: BorderRadius.circular(14),
-          color: isSelected ? AppColors.primary.withOpacity(0.05) : null,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: isSelected
+              ? [
+                  BoxShadow(
+                    color: AppColors.primary.withOpacity(0.1),
+                    blurRadius: 8,
+                    offset: const Offset(0, 4),
+                  )
+                ]
+              : null,
         ),
         child: Column(
           children: [
-            Icon(icon, color: isSelected ? AppColors.primary : AppColors.textSecondaryLight),
-            const SizedBox(height: 6),
+            Icon(icon,
+                color: isSelected
+                    ? AppColors.primary
+                    : AppColors.textSecondaryLight,
+                size: 28),
+            const SizedBox(height: 12),
             Text(title,
                 style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  color: isSelected ? AppColors.primary : null,
+                  fontWeight: FontWeight.w700,
+                  color: isSelected
+                      ? AppColors.primary
+                      : AppColors.textSecondaryLight,
                 )),
+            const SizedBox(height: 4),
             Text(subtitle,
                 textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 11, color: AppColors.textSecondaryLight)),
+                style: TextStyle(
+                    fontSize: 11,
+                    color: isSelected
+                        ? AppColors.textPrimaryLight
+                        : AppColors.textSecondaryLight)),
           ],
         ),
       ),
